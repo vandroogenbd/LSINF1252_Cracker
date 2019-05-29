@@ -10,7 +10,7 @@
 #   --- Variables ---
 
 NAME = cracker
-FLAGS = -lpthread -std=c99 -g -Werror -Wall 
+FLAGS = -lpthread -std=c99 -Werror -Wall 
 SRCS = reverse sha256 main output start_threads thread_reader buffer_functions \
 		thread_reverser thread_stacker stack_functions
 CFILES = $(addsuffix .c,$(SRCS))
