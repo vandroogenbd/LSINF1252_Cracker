@@ -49,7 +49,7 @@ void	*stacker(void *arg) {
 			while (is_empty(dehashs[iter], 16))
 				iter++;
 
-			buf_cpy(temp_buf, dehashs[iter], 16);
+			buf_cpy((uint8_t*)temp_buf, (uint8_t*)dehashs[iter], 16);
 
 			empty_buffer(dehashs[iter], 16);
 

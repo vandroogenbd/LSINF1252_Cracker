@@ -195,8 +195,6 @@ int	start_threads(char *output, int n_threads, bool cons, char **input_files, in
 	}
 	free(hashs);
 	free(dehashs);
-
-	stack *temp = final_stack;
 	
 	output_stack(final_stack, output);
 

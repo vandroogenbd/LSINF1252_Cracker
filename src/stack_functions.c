@@ -20,7 +20,7 @@ stack	*new_stack_i(char *str, stack *next) {
 		return (NULL);
 	if (!(buf = (char*)malloc(sizeof(char)*16)))
 		return (NULL);
-	buf_cpy(buf, str, 16);
+	buf_cpy((uint8_t*)buf, (uint8_t*)str, 16);
 	temp->string = buf;
 	temp->next = next;
 	return (temp);
