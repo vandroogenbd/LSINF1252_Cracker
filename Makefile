@@ -10,11 +10,12 @@
 #   --- Variables ---
 
 NAME = cracker
-FLAGS = -lpthread -std=c99 -Werror -Wall 
+FLAGS = -lpthread -std=c99 -Werror -Wall
+HDIR = headers/
+	# Les fichiers source
 SRCS = reverse sha256 main output start_threads thread_reader buffer_functions \
 		thread_reverser thread_stacker stack_functions
 CFILES = $(addsuffix .c,$(SRCS))
-HDIR = headers/
 CDIR = src/
 	# Les fichiers source testés individuellement
 SRC_TESTS = buffer_functions stack_functions
@@ -27,23 +28,27 @@ TDIR = tests/
 #   --- Methodes ---
 
 all:
-	@((make -s clean_t)&&(make -s cracker)&&(make -s test)) || \
-		((make -s cracker)&&(make -s test))
+	@((make -s clean)&&(make -s cracker)&&(make -s test)) || \
+		((make -s cracker)&&(make -s test)) || (make -s test)
 
 $(NAME):
 	@gcc -o $(NAME) $(addprefix $(CDIR),$(CFILES)) -I$(HDIR) $(FLAGS)
 	@printf 'Programme cracker compilé\n'
 
-clean:
+clean: clean_c clean_t
+
+clean_c:
 	@rm $(NAME)
 	@printf 'Cracker a été supprimé\n'
 
-clean_t: clean
+clean_t:
 	@rm tester
 	@printf 'Tester a été supprimé\n'
-	
-test:
-	@printf 'Préparation des tests\n'
+
+tester:
+	@printf 'Compilation des tests unitaires\n'
 	@gcc -o tester $(addprefix $(TDIR),$(CTESTS)) $(addprefix $(CDIR),$(SRC_CTESTS)) \
 		-I$(HDIR) $(FLAGS) -lcunit
+	
+test: tester
 	@tests/script_tests.sh

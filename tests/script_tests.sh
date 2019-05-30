@@ -3,20 +3,22 @@
 
 
 # Description du protocole de test
-printf '\nProtocole de test :\n\n'
+printf '\n\nProtocole de test :\n\n'
 
 printf '1. Tests unitaires des fonctions définies dans les fichiers stack_functions.c et buffer_functions.c\n'
 
 printf "2. Tests de robustesse du programme cracker en cas d'inputs incorrects\n"
 
-printf "3. Vérification des outputs du programme cracker\n"
+printf "3. Vérification des fuites de mémoire (memcheck & helgrind)\n"
 
-printf "4. Analyse de la variation des performances en fonction du nombre de threads\n"
+printf "4. Vérification des outputs du programme cracker\n"
 
-printf "\nNB: L'ensemble des tests peut prendre plusieurs minutes\n\n"
+printf "5. Analyse de la variation des performances en fonction du nombre de threads\n"
+
+printf "\nNB: L'ensemble des tests peut prendre de 5 minutes à 1 heure (sur un grille-pain)\n\n"
 
 # Les tests commencent quand l'utilisateur le souhaite
-read -p "Appuyer sur enter pour lancer les tests " var
+read -p "Appuyer sur enter pour passer aux tests unitaires " var
 clear
 
 
@@ -27,7 +29,7 @@ printf "\n1. --- Tests unitaires ---\n"
 
 
 
-read -p "Appuyer sur enter pour continuer " var
+read -p "Appuyer sur enter pour passer aux tests de robustesse " var
 clear
 
 
@@ -57,12 +59,30 @@ printf '\n'
 
 
 
-read -p "Appuyer sur enter pour continuer " var
+read -p "Appuyer sur enter pour passer aux fuites de mémoire " var
+clear
+
+
+# Lancement des tests de robustesse
+printf "\n3. --- Fuites de mémoire ---\n"
+
+printf "\n3.1 Lancement de memcheck (peut prendre plusieurs minutes)\n\n"
+printf "Commande : 'valgrind --leak-check=full --show-leak-kinds=all ./cracker -t 2 inputs/010.bin'\n\n"
+valgrind --leak-check=full --show-leak-kinds=all ./cracker -t 2 inputs/010.bin
+
+printf "\n3.1 Lancement de helgrind (peut prendre plusieurs minutes)\n\n"
+printf "Commande : 'valgrind --tool=helgrind ./cracker -t 2 inputs/010.bin'\n\n"
+valgrind --tool=helgrind ./cracker -t 2 inputs/010.bin
+printf '\n'
+
+
+
+read -p "Appuyer sur enter pour passer à la vérification des outputs " var
 clear
 
 
 # Lancement de la vérification des outputs
-printf "\n3. --- Vérification des outputs ---\n"
+printf "\n4. --- Vérification des outputs ---\n"
 
 # /!\ LANCER AVEC PLUS D'UN THREAD PEUT CHANGER L'ORDRE DES MOTS EN OUTPUT
 printf "\nDifférence entre 010.bin passé dans cracker et 010_voy.txt :\n"
@@ -91,34 +111,34 @@ printf '\nCette ligne devrait directement suivre le lancement du test\n\n'
 
 
 
-read -p "Appuyer sur enter pour continuer " var
+read -p "Appuyer sur enter pour passer à l'analyse de performances " var
 clear
 
 
 # Lancement de la comparaison de performances
-printf "\n4. --- Analyse de performances ---\n"
+printf "\n5. --- Analyse de performances ---\n"
 
 printf "\n\n- - - - - TEST VOYELLES - - - - -\n\n"
 
-printf "Temps total pris pour 10 exécutions du programme  avec 1 thread, basé sur les voyelles, pas d'output specifié\n\n"
+printf "Temps total pris pour 10 exécutions du programme  avec 1 thread, basé sur les voyelles, pas d'output spécifié\n\n"
 time for ((i = 1 ; i < 11 ; i = i+1))
 do
 	./cracker -t 1 inputs/050.bin
 done | grep real
 
-printf "\nTemps total pris pour 10 exécutions du programme  avec 2 threads, basé sur les voyelles, pas d'output specifié\n\n"
+printf "\nTemps total pris pour 10 exécutions du programme  avec 2 threads, basé sur les voyelles, pas d'output spécifié\n\n"
 time for ((i = 1 ; i < 11 ; i = i+1))
 do
 	./cracker -t 2 inputs/050.bin
 done | grep real
 
-printf "\nTemps total pris pour 10 exécutions du programme  avec 3 threads, basé sur les voyelles, pas d'output specifié\n\n"
+printf "\nTemps total pris pour 10 exécutions du programme  avec 3 threads, basé sur les voyelles, pas d'output spécifié\n\n"
 time for ((i = 1 ; i < 11 ; i = i+1))
 do
 	./cracker -t 3 inputs/050.bin
 done | grep real
 
-printf "\nTemps total pris pour 10 exécutions du programme  avec 4 threads, basé sur les voyelles, pas d'output specifié\n\n"
+printf "\nTemps total pris pour 10 exécutions du programme  avec 4 threads, basé sur les voyelles, pas d'output spécifié\n\n"
 time for ((i = 1 ; i < 11 ; i = i+1))
 do
 	./cracker -t 4 inputs/050.bin
@@ -126,25 +146,25 @@ done | grep real
 
 printf "\n- - - - - TEST CONSONNES - - - - -\n\n"
 
-printf "\nTemps total pris pour 10 exécutions du programme  avec 1 thread, basé sur les consonnes, pas d'output specifié\n\n"
+printf "\nTemps total pris pour 10 exécutions du programme  avec 1 thread, basé sur les consonnes, pas d'output spécifié\n\n"
 time for ((i = 1 ; i < 11 ; i = i+1))
 do
 	./cracker -t 1 inputs/050.bin -c
 done | grep real
 
-printf "\nTemps total pris pour 10 exécutions du programme  avec 2 threads, basé sur les consonnes, pas d'output specifié\n\n"
+printf "\nTemps total pris pour 10 exécutions du programme  avec 2 threads, basé sur les consonnes, pas d'output spécifié\n\n"
 time for ((i = 1 ; i < 11 ; i = i+1))
 do
 	./cracker -t 2 inputs/050.bin -c
 done | grep real
 
-printf "\nTemps total pris pour 10 exécutions du programme  avec 3 threads, basé sur les consonnes, pas d'output specifié\n\n"
+printf "\nTemps total pris pour 10 exécutions du programme  avec 3 threads, basé sur les consonnes, pas d'output spécifié\n\n"
 time for ((i = 1 ; i < 11 ; i = i+1))
 do
 	./cracker -t 3 inputs/050.bin -c
 done | grep real
 
-printf "\nTemps total pris pour 10 exécutions du programme  avec 4 threads, basé sur les consonnes, pas d'output specifié\n\n"
+printf "\nTemps total pris pour 10 exécutions du programme  avec 4 threads, basé sur les consonnes, pas d'output spécifié\n\n"
 time for ((i = 1 ; i < 11 ; i = i+1))
 do
 	./cracker -t 4 inputs/050.bin -c
@@ -152,4 +172,6 @@ done | grep real
 
 
 
-printf 'Fin des tests!'
+printf '\n\n - - - - - Fin des tests! - - - - - \n\n'
+
+read -p "Appuyer sur enter pour quitter les tests " var

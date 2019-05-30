@@ -70,6 +70,10 @@ int	start_threads(char *output, int n_threads, bool cons, char **input_files, in
 		}
 	}
 
+	// Initialisation des deux tableaux patagés
+	init_tab((char**)hashs, hashs_size, 32);
+	init_tab(dehashs, hashs_size, 16);
+
 
 	// - - - Initialisation des mutex et sémaphores - - -
 	err = pthread_mutex_init(&mutex1, NULL);
